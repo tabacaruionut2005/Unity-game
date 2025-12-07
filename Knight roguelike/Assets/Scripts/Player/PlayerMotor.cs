@@ -13,12 +13,16 @@ public class PlayerMotor : MonoBehaviour
     private bool lerpCrouch = false;
     private float crouchTimer = 0;
     private bool sprinting = false;
+    private Animator animator;
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        animator = GetComponentInChildren<Animator>();
+
     }
 
     // Update is called once per frame
@@ -56,6 +60,20 @@ public class PlayerMotor : MonoBehaviour
             playerVelocity.y = -2f;
         }
         controller.Move(playerVelocity * Time.deltaTime);
+
+
+        if (!animator.GetBool("isAttacking"))
+        {
+            if (moveDirection != Vector3.zero)
+            {
+                animator.SetBool("isWalking", true);
+            }
+            else
+            {
+                animator.SetBool("isWalking", false);
+            }
+        }
+
     }
 
     public void Jump()
